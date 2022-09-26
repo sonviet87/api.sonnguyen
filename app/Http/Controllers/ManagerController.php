@@ -46,6 +46,7 @@ class ManagerController extends RestfulController
         }catch(\Exception $e){
             return $this->_error($e, self::HTTP_INTERNAL_ERROR);
         }
+        
     }
 
     public function export()
