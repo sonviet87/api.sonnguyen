@@ -15,6 +15,6 @@ interface ManagerInterface {
      * @param array $data
      * @return mixed
      */
-
+    public function getList($filter);
 
 }

@@ -21,5 +21,8 @@ class ManagerService extends BaseService
         return $this->manager->getListPaginate($perPage,$filter);
     }
 
-
+    public function getList($filter)
+    {
+        return $this->manager->getList($filter);
+    }
 }

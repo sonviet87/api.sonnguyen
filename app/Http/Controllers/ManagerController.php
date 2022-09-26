@@ -46,12 +46,24 @@ class ManagerController extends RestfulController
         }catch(\Exception $e){
             return $this->_error($e, self::HTTP_INTERNAL_ERROR);
         }
-        
+
     }
 
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new ManagerExport(), 'manager.xlsx');
+        $type_transacction = $request->input("typeTransaccsion", '');
+        $type_account = $request->input("typeAccount", '');
+        $startDay = $request->input("startDay", '');
+        $endDay  = $request->input("endDay", '');
+
+        $filter = [
+            'type_transacction'            => $type_transacction,
+            'type_account'               => $type_account,
+            'startDay'               => $startDay,
+            'endDay'               => $endDay,
+        ];
+        $listData = $this->managerService->getList($filter);
+        return Excel::download(new ManagerExport($listData), 'manager.xlsx');
     }
 
 

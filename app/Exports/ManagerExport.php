@@ -3,6 +3,8 @@
 namespace App\Exports;
 
 use App\Models\Manager;
+use App\Services\ManagerService;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -15,6 +17,12 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 
 class ManagerExport implements  FromCollection, WithHeadings, WithCustomStartCell, WithEvents,ShouldAutoSize,WithMapping
 {
+    private $data;
+    public function __construct(Collection $data)
+    {
+        $this->data = $data;
+    }
+
     public function startCell(): string
     {
         return 'A2';
@@ -108,7 +116,8 @@ class ManagerExport implements  FromCollection, WithHeadings, WithCustomStartCel
      */
     public function collection()
     {
-        return Manager::get();
+       
+        return $this->data;
     }
 
     /**

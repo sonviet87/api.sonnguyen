@@ -10,9 +10,9 @@ class ManagerRepository implements ManagerInterface
 {
     protected $model;
 
-    function __construct(Manager $unit)
+    function __construct(Manager $manager)
     {
-        $this->model = $unit;
+        $this->model = $manager;
     }
 
     public function getListPaginate($perPage = 20,$filter = [])
@@ -35,6 +35,24 @@ class ManagerRepository implements ManagerInterface
         return $query->orderBy('created_at', 'desc')->paginate($perPage);
     }
 
+    public function getList($filter = [])
+    {
 
+        $query = $this->model;
+        if(!empty($filter)){
+            if(isset($filter['type_transacction']) && $filter['type_transacction'] !=0){
+                $query = $query->where('type_transacction',$filter['type_transacction']);
+            }
+            if(isset($filter['type_account']) && $filter['type_account'] !=0){
+                $query = $query->where('type_account',$filter['type_account']);
+            }
+            if(isset($filter['startDay']) && $filter['startDay'] !='' && isset($filter['endDay']) && $filter['endDay'] !=''){
+                $statDay = date('Y-m-d H:i:s',strtotime($filter['startDay']));
+                $endDay = date('Y-m-d H:i:s',strtotime($filter['endDay']));
+                $query = $query->where('created_at', '>=', $statDay)->where('created_at', '<=', $endDay);
+            }
+        }
+        return $query->orderBy('id', 'desc')->get();
+    }
 
 }
